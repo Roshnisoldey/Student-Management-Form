@@ -90,7 +90,7 @@ export default function StudentFormPage() {
                 setSubmitted(false);
                 if(step === 1){
 
-                  const isValid = await trigger(["fullName", "dateOfBirth", "gender", "grade", "schoolName", "address", "city", "state", "pinCode"]);
+                  const isValid = await trigger(["fullName", "dateOfBirth", "gender", "grade", "schoolName", "address", "city", "state", "pinCode" ,"profilePicture"]);
                 
                   if(isValid) {
                  setStep( step+1)}

@@ -41,6 +41,25 @@ export const studentSchema = z.object({
       .string()
       .regex(/^\d{6}$/, "Invalid Pin"),
 
+    profilePicture:z
+      .any()
+      .refine(
+        (files) => files?.length > 0,
+        "Profile picture is required"
+      )
+      .refine(
+        (files) =>
+          files?.length === 0 ||
+        ["image/jpeg", "image/png", "image/webp"].includes(
+          files?.[0]?.type
+        ),
+        "Only image files are allowed"
+      )
+      .refine(
+         (files) =>
+          !files?.[0] || files[0].size <= 2*1024*1024,
+         "Image size must be less than 2MB"
+      ),
 
     parentName: z.string().min(1, "Parent Name required"),
 
