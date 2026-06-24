@@ -17,12 +17,14 @@ type FormData = z.infer<typeof studentSchema>;
 
 export default function StudentFormPage() {
   const [step, setStep] = useState(1);
+  const [submitted, setSubmitted] = useState(false);
 
   const{
     register,
     handleSubmit,
     watch,
     trigger,
+    reset,
     formState:{errors},
   } = useForm<FormData>({
     resolver: zodResolver(studentSchema),
@@ -32,8 +34,11 @@ export default function StudentFormPage() {
   const fullName = watch("fullName");
 
   const onSubmit = (data:FormData)=>{
-    alert("Form Submitted!")
+    alert("Form Submitted successfully!")
     console.log(data);
+    setSubmitted(true);
+    reset();
+    setStep(1);
   }
 
   return (
@@ -47,6 +52,12 @@ export default function StudentFormPage() {
         <p className="text-gray-500 mt-2">
           Please fill in the details accurately
         </p>
+
+        {submitted && (
+          <div className="mt-4 p-3 bg-green-100 text-green-700 rounded">
+            Form submitted successfully!
+          </div>
+        )}
 
         <Stepper currentStep={step} />
 
@@ -76,6 +87,7 @@ export default function StudentFormPage() {
               type="button"
               onClick={ async(e) => {
                 e.preventDefault();
+                setSubmitted(false);
                 if(step === 1){
 
                   const isValid = await trigger(["fullName", "dateOfBirth", "gender", "grade", "schoolName", "address", "city", "state", "pinCode"]);
